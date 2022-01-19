@@ -4,19 +4,22 @@
 % September 12, 2017
 % Updated by Fengqi Zhang, Columbia University
 % 2019-08-01
+% Updated by huangshu
+% 2021-12-12
+
 clearvars; 
 close all;
 % Time the run time
 tic
 % Load configuration
-%corner = ["tt"];
-%corner = ["ff"];
-%corner = ["ss"];
-%corner = ["fs"];
-%corner = ["sf"];
+corner(1) = "tt";
+corner(2) = "ff";
+corner(3) = "ss";
+%corner(4) = "fs";
+%corner(5) = "sf";
 
 for cSel = 1:length(corner)
-  c = cornerSw_config_bsim3_180msrf_spectre(corner(cSel));
+  c = cornerSw_config_bsim3_181aBCD_spectre(corner(cSel));
   
                                 % Write sweep info
   nch.INFO   = c.modelinfo;
@@ -45,7 +48,7 @@ for cSel = 1:length(corner)
     disp(str);
     for j = 1:length(c.VSB)
                                 % Write simulation parameters
-      fid = fopen('techsweep_params_180msrf.scs', 'w');
+      fid = fopen('techsweep_params_181aBCD.scs', 'w');
       fprintf(fid,'parameters length = %d\n', c.LENGTH(i));
       fprintf(fid,'parameters sb = %d\n', c.VSB(j));
       fclose(fid);
@@ -54,6 +57,7 @@ for cSel = 1:length(corner)
       pause(2.5)
       
                                 % Run simulator
+                              
       [status,result] = system(c.simcmd);
       if(status)
         disp('Simulation did not run properly. Check techsweep.out.')
@@ -101,7 +105,6 @@ for cSel = 1:length(corner)
   % Save the Data
   save(c.savefilen, '-struct', 'nch', '-v7.3');
   save(c.savefilep, '-struct', 'pch', '-v7.3');
+
 end
-
 toc
-
